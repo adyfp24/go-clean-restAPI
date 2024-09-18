@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"go-clean-restAPI/pkg/database"
+	"log"
 )
 
 func main() {
-	name := "ady firdaus"
-	fmt.Println("Hello, welcome" + name)
-
-	for i := 1; i <= 5; i++ {
-		fmt.Println("loop ke : " + strconv.Itoa(i))
+	if err := database.InitDB(); err != nil {
+		log.Fatalf("Could not initialize database: %v", err)
 	}
 
+	fmt.Println("wkwkw golang ni bos")
 }
