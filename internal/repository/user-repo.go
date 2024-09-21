@@ -1,14 +1,24 @@
 package repository
 
-//type UserRepo interface {
-//	 Create(){}
-//
-//}
+import (
+	"database/sql"
+	"go-clean-restAPI/internal/entity"
+)
 
-type userRepo struct{}
+type UserRepo interface {
+	GetAllUser() ([]entity.User, error)
+}
 
-//func NewUserRepo() UserRepo {
-//	return &userRepo{}
-//}
+type userRepo struct {
+	db *sql.DB
+}
 
-func CreatePage() {}
+func NewUserRepo(db *sql.DB) UserRepo {
+	return &userRepo{
+		db: db,
+	}
+}
+
+func (r *userRepo) GetAllUser() ([]entity.User, error) {
+	return []entity.User{}, nil
+}
