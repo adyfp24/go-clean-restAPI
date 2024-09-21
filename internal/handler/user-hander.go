@@ -27,6 +27,7 @@ func (h *userHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(users); err != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}

@@ -20,5 +20,9 @@ func NewUserUsecase(userRepo repository.UserRepo) UserUsecase {
 }
 
 func (u *userUsecase) GetAllUser() ([]entity.User, error) {
-	return u.userRepo.GetAllUser()
+	users, err := u.userRepo.GetAllUser()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
