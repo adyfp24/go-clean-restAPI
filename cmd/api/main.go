@@ -23,8 +23,11 @@ func main() {
 	handlers := handler.NewHandlers(usecases)
 
 	r := route.InitRoute(handlers)
+	port := config.AppConfig.Server.Port
 
-	if err := http.ListenAndServe(":3000", r); err != nil {
+	log.Printf("server run on port: %v\n", port)
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatalf("Could not start server: %v", err)
 	}
+
 }

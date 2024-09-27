@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"go-clean-restAPI/config"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -11,7 +12,14 @@ import (
 var DB *sql.DB
 
 func InitDB() error {
-	dsn := "root:@tcp(127.0.0.1:3306)/db_clean_go"
+	dbConfig := config.AppConfig.Database
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		dbConfig.Username,
+		dbConfig.Password,
+		dbConfig.Host,
+		dbConfig.Port,
+		dbConfig.Database,
+	)
 	db, err := sql.Open("mysql", dsn)
 
 	if err != nil {

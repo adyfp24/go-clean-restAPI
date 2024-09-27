@@ -26,8 +26,8 @@ type Config struct {
 var AppConfig *Config
 
 func LoadConfig() {
-	if err := godotenv.Load; err != nil {
-		log.Fatal("Error loading .env file")
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file : %v", err)
 	}
 
 	AppConfig = &Config{
@@ -36,7 +36,7 @@ func LoadConfig() {
 		},
 		Database: DatabaseConfig{
 			Host:     getEnv("DB_HOST", "127.0.0.1"),
-			Port:     getEnv("DB_PORT", "3000"),
+			Port:     getEnv("DB_PORT", "3306"),
 			Username: getEnv("DB_USER", "root"),
 			Password: getEnv("DB_PASSWORD", ""),
 			Database: getEnv("DB_NAME", "db_clean_go"),
