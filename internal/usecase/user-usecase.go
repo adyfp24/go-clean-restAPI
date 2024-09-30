@@ -1,12 +1,12 @@
 package usecase
 
 import (
-	"go-clean-restAPI/internal/entity"
+	"go-clean-restAPI/internal/dto"
 	"go-clean-restAPI/internal/repository"
 )
 
 type UserUsecase interface {
-	GetAllUser() ([]entity.User, error)
+	GetAllUser() ([]dto.UserDTO, error)
 }
 
 type userUsecase struct {
@@ -19,10 +19,11 @@ func NewUserUsecase(userRepo repository.UserRepo) UserUsecase {
 	}
 }
 
-func (u *userUsecase) GetAllUser() ([]entity.User, error) {
+func (u *userUsecase) GetAllUser() ([]dto.UserDTO, error) {
 	users, err := u.userRepo.GetAllUser()
 	if err != nil {
 		return nil, err
 	}
-	return users, nil
+	usersDTO := make([]dto.UserDTO, len(users))
+	return usersDTO, nil
 }
