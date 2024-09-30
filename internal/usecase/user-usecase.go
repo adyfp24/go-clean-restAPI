@@ -21,9 +21,20 @@ func NewUserUsecase(userRepo repository.UserRepo) UserUsecase {
 
 func (u *userUsecase) GetAllUser() ([]dto.UserDTO, error) {
 	users, err := u.userRepo.GetAllUser()
+
 	if err != nil {
 		return nil, err
 	}
+
 	usersDTO := make([]dto.UserDTO, len(users))
+	for i, user := range users {
+		usersDTO[i] = dto.UserDTO{
+			ID:      user.ID,
+			Name:    user.Name,
+			Age:     user.Age,
+			Address: user.Address,
+		}
+	}
+
 	return usersDTO, nil
 }

@@ -47,5 +47,4 @@ func (r *userRepo) GetAllUser() ([]entity.User, error) {
 	}
 
 	return users, nil
-
 }
