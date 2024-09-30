@@ -5,4 +5,5 @@ type UserDTO struct {
 	Name    string `json:"name"`
 	Age     int    `json:"age"`
 	Address string `json:"address"`
+	Role    string `json:"role"`
 }

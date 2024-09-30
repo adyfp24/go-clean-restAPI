@@ -2,12 +2,14 @@ package repository
 
 import (
 	"database/sql"
+	"go-clean-restAPI/internal/dto"
 	"go-clean-restAPI/internal/entity"
 	"log"
 )
 
 type UserRepo interface {
-	GetAllUser() ([]entity.User, error)
+	GetAll() ([]entity.User, error)
+	Create(newUser dto.UserDTO) (entity.User, error)
 }
 
 type userRepo struct {
@@ -20,7 +22,7 @@ func NewUserRepo(db *sql.DB) UserRepo {
 	}
 }
 
-func (r *userRepo) GetAllUser() ([]entity.User, error) {
+func (r *userRepo) GetAll() ([]entity.User, error) {
 
 	var query = "SELECT id, name, age, address, role FROM users"
 
@@ -47,4 +49,37 @@ func (r *userRepo) GetAllUser() ([]entity.User, error) {
 	}
 
 	return users, nil
+}
+
+func (r *userRepo) Create(newUser dto.UserDTO) (entity.User, error) {
+	var query = "INSERT INTO users (name, age, address, role) VALUES (?, ?, ?, ?)"
+	stmt, err := r.db.Prepare(query)
+	if err != nil {
+		log.Printf("Error while preparing statement: %v", err)
+		return entity.User{}, err
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(newUser.Name, newUser.Age, newUser.Address, newUser.Role)
+	if err != nil {
+		log.Printf("Error while executing statement: %v", err)
+		return entity.User{}, err
+	}
+
+	lastInsertId, err := result.LastInsertId()
+	if err != nil {
+		log.Printf("Error while executing statement: %v", err)
+		return entity.User{}, err
+	}
+
+	createdUser := entity.User{
+		ID:      int(lastInsertId),
+		Name:    newUser.Name,
+		Age:     newUser.Age,
+		Address: newUser.Address,
+		Role:    newUser.Role,
+	}
+
+	return createdUser, nil
+
 }
