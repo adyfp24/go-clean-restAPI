@@ -35,19 +35,19 @@ func (h *userHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *userHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var userDTO dto.UserDTO
-	err := json.NewDecoder(r.Body).Decode(&userDTO)
+	var userRequestDTO dto.UserRequest
+	err := json.NewDecoder(r.Body).Decode(&userRequestDTO)
 	if err != nil {
 		formatter.BadRequestResponse(w, "bad request", err.Error())
 		return
 	}
 
-	if userDTO.Name == "" || userDTO.Address == "" || userDTO.Age <= 0 || userDTO.Role == "" {
+	if userRequestDTO.Name == "" || userRequestDTO.Address == "" || userRequestDTO.Age <= 0 || userRequestDTO.Role == "" {
 		formatter.BadRequestResponse(w, "bad request", "name or address or age or role is invalid")
 		return
 	}
 
-	newUser, err := h.userUC.CreateUser(userDTO)
+	newUser, err := h.userUC.CreateUser(userRequestDTO)
 	if err != nil {
 		formatter.ErrorResponse(w, 500, "error when create user data", err.Error())
 		return

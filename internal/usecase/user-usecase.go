@@ -7,8 +7,8 @@ import (
 )
 
 type UserUsecase interface {
-	GetAllUser() ([]dto.UserDTO, error)
-	CreateUser(user dto.UserDTO) (dto.UserDTO, error)
+	GetAllUser() ([]dto.UserResponse, error)
+	CreateUser(user dto.UserRequest) (dto.UserResponse, error)
 }
 
 type userUsecase struct {
@@ -21,16 +21,16 @@ func NewUserUsecase(userRepo repository.UserRepo) UserUsecase {
 	}
 }
 
-func (u *userUsecase) GetAllUser() ([]dto.UserDTO, error) {
+func (u *userUsecase) GetAllUser() ([]dto.UserResponse, error) {
 	users, err := u.userRepo.GetAll()
 
 	if err != nil {
 		return nil, err
 	}
 
-	usersDTO := make([]dto.UserDTO, len(users))
+	usersDTO := make([]dto.UserResponse, len(users))
 	for i, user := range users {
-		usersDTO[i] = dto.UserDTO{
+		usersDTO[i] = dto.UserResponse{
 			ID:      user.ID,
 			Name:    user.Name,
 			Age:     user.Age,
@@ -41,14 +41,14 @@ func (u *userUsecase) GetAllUser() ([]dto.UserDTO, error) {
 	return usersDTO, nil
 }
 
-func (u *userUsecase) CreateUser(user dto.UserDTO) (dto.UserDTO, error) {
+func (u *userUsecase) CreateUser(user dto.UserRequest) (dto.UserResponse, error) {
 	newUser, err := u.userRepo.Create(user)
 	if err != nil {
 		log.Printf("error while create new user: %v", err.Error())
-		return dto.UserDTO{}, err
+		return dto.UserResponse{}, err
 	}
 
-	newUserDTO := dto.UserDTO{
+	newUserDTO := dto.UserResponse{
 		ID:      newUser.ID,
 		Name:    newUser.Name,
 		Age:     newUser.Age,

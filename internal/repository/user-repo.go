@@ -9,7 +9,7 @@ import (
 
 type UserRepo interface {
 	GetAll() ([]entity.User, error)
-	Create(newUser dto.UserDTO) (entity.User, error)
+	Create(newUser dto.UserRequest) (entity.User, error)
 }
 
 type userRepo struct {
@@ -51,7 +51,7 @@ func (r *userRepo) GetAll() ([]entity.User, error) {
 	return users, nil
 }
 
-func (r *userRepo) Create(newUser dto.UserDTO) (entity.User, error) {
+func (r *userRepo) Create(newUser dto.UserRequest) (entity.User, error) {
 	var query = "INSERT INTO users (name, age, address, role) VALUES (?, ?, ?, ?)"
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
