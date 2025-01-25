@@ -7,16 +7,14 @@ import (
 	"go-clean-restAPI/internal/route"
 	"go-clean-restAPI/internal/usecase"
 	"go-clean-restAPI/pkg/database"
+	"go-clean-restAPI/pkg/database/migrations"
 	"log"
 	"net/http"
 )
 
 func main() {
 	config.LoadConfig()
-
-	if err := database.InitDB(); err != nil {
-		log.Fatalf("Could not initialize database: %v", err)
-	}
+	migrations.RunMigration()
 
 	repositories := repository.NewRepositories(database.DB)
 	usecases := usecase.NewUseCases(repositories)

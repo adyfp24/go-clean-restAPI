@@ -1,6 +1,8 @@
 package usecase
 
-import "go-clean-restAPI/internal/repository"
+import (
+	"go-clean-restAPI/internal/repository"
+)
 
 type AuthUsecase interface {
 	Login()

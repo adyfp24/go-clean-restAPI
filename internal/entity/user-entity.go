@@ -1,9 +1,9 @@
 package entity
 
 type User struct {
-	ID      int
-	Name    string
+	ID      int    `gorm:"primaryKey;"`
+	Name    string `gorm:"not null;unique"`
 	Age     int
-	Address string
-	Role    string
+	Address string `gorm:"not null"`
+	Role    string `gorm:"not null"`
 }

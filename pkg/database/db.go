@@ -1,15 +1,15 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
 	"go-clean-restAPI/config"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-var DB *sql.DB
+var DB *gorm.DB
 
 func InitDB() error {
 	dbConfig := config.AppConfig.Database
@@ -20,15 +20,10 @@ func InitDB() error {
 		dbConfig.Port,
 		dbConfig.Database,
 	)
-	db, err := sql.Open("mysql", dsn)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		fmt.Errorf("failed to connect database : %v", err)
-	}
-
-	err = db.Ping()
-	if err != nil {
-		fmt.Errorf("failed to ping database : %v", err)
 	}
 
 	DB = db

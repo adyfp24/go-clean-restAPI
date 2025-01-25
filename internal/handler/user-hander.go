@@ -31,6 +31,11 @@ func (h *userHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if len(users) == 0 {
+		formatter.NotFoundResponse(w, "user data not found")
+		return
+	}
+
 	formatter.SuccessResponse(w, "user data succesfully fetched", users)
 }
 

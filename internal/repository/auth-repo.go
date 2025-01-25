@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"database/sql"
+	"gorm.io/gorm"
 )
 
 type AuthRepo interface {
@@ -10,17 +10,18 @@ type AuthRepo interface {
 }
 
 type authRepo struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewAuthRepo(db *sql.DB) AuthRepo {
+func NewAuthRepo(db *gorm.DB) AuthRepo {
 	return &authRepo{
 		db: db,
 	}
 }
 
-func (r *authRepo) Login() {
+func (r *authRepo) Login(){
+	
+}
+func (r *authRepo) Register(){
 
 }
-
-func (r *authRepo) Register() {}
