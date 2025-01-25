@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-clean-restAPI/internal/entity"
 	"go-clean-restAPI/pkg/database"
+	"go-clean-restAPI/pkg/database/seeders"
 )
 
 func RunMigration(){
@@ -19,6 +20,8 @@ func RunMigration(){
 	if err != nil {
 		panic(err)
 	}
+
+	seeders.AddUserSeeder(database.DB)	
 
 	fmt.Println("migration success")
 }

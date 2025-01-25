@@ -36,7 +36,7 @@ func (h *userHandler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formatter.SuccessResponse(w, "user data succesfully fetched", users)
+	formatter.SuccessResponse(w, "user data succesfully fetched", map[string]interface{}{"users": users})
 }
 
 func (h *userHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
