@@ -1,4 +1,49 @@
-FROM ubuntu:latest
-LABEL authors="adyfirdaus"
+version: '3.8'
 
-ENTRYPOINT ["top", "-b"]
+services:
+  # Service untuk aplikasi Golang
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-api
+    ports:
+      - "8080:8080" # Expose port 8080 ke host
+    depends_on:
+      - db # Tunggu sampai service db siap
+    env_file: 
+      - .env
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=mysecurepassword
+      - DB_NAME=db_clean_go
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+    command: sh -c "until nc -z db 3306; do echo Waiting for MySQL; sleep 2; done; ./main"
+
+  # Service untuk MySQL
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecurepassword
+      MYSQL_DATABASE: db_clean_go
+    ports:
+      - "3307:3306" # Expose port MySQL ke host
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/mysql # Persist data ke volume
+
+# Network untuk komunikasi antar services
+networks:
+  app-network:
+    driver: bridge
+
+# Volumes untuk persist data MySQL
+volumes:
+  db_data:

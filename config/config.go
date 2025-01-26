@@ -27,7 +27,7 @@ var AppConfig *Config
 
 func LoadConfig() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file : %v", err)
+		log.Fatalf("Error loading .env file : %v", err)
 	}
 
 	AppConfig = &Config{
@@ -35,7 +35,7 @@ func LoadConfig() {
 			Port: getEnv("PORT", "3000"),
 		},
 		Database: DatabaseConfig{
-			Host:     getEnv("DB_HOST", "127.0.0.1"),
+			Host:     getEnv("DB_HOST", "db"),
 			Port:     getEnv("DB_PORT", "3306"),
 			Username: getEnv("DB_USER", "root"),
 			Password: getEnv("DB_PASSWORD", ""),

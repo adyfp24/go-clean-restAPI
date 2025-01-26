@@ -13,17 +13,20 @@ var DB *gorm.DB
 
 func InitDB() error {
 	dbConfig := config.AppConfig.Database
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?tls=false",
 		dbConfig.Username,
 		dbConfig.Password,
 		dbConfig.Host,
 		dbConfig.Port,
 		dbConfig.Database,
 	)
+
+	log.Printf("DSN: %s", dsn)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		fmt.Errorf("failed to connect database : %v", err)
+		log.Fatalf("failed to connect database : %v", err)
 	}
 
 	DB = db
